@@ -8,6 +8,8 @@ import {
 } from "react";
 import { useBoards } from "../hooks/useBoards";
 
+const STORAGE_KEY = "selectedBoard";
+
 type SelectedBoardContextType = {
   selectedBoard: Board | null;
   selectBoard: (id: string) => void;
@@ -27,7 +29,9 @@ export default function SelectedBoardProvider({
 }) {
   const { boards, loading: loadingBoards } = useBoards();
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
-  const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null);
+  const [selectedBoardId, setSelectedBoardId] = useState<string | null>(() =>
+    localStorage.getItem(STORAGE_KEY),
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,6 +51,7 @@ export default function SelectedBoardProvider({
 
   const selectBoard = (id: string) => {
     setSelectedBoardId(id);
+    localStorage.setItem(STORAGE_KEY, id);
   };
 
   return (
