@@ -1,12 +1,14 @@
+import { useModal } from "@/app/providers/ModalProvider";
 import Board from "@/firebase/models/Board";
 import { ComponentPropsWithoutRef } from "react";
 import { useBoards } from "../hooks/useBoards";
+import AddEditBoardModal from "../modals/AddEditBoardModal";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
 export default function Boards(props: ComponentPropsWithoutRef<"div">) {
   const { boards, loading } = useBoards();
   const { selectedBoard, selectBoard } = useSelectedBoard();
-  /* const { openModal } = useModal(); */
+  const { openModal } = useModal();
 
   return (
     <div className={`font-bold text-medium-grey ${props.className}`} {...props}>
@@ -27,9 +29,7 @@ export default function Boards(props: ComponentPropsWithoutRef<"div">) {
         <li>
           <button
             className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
-            onClick={() => {
-              /* openModal(AddEditBoardModal, { mode: "add" }) */
-            }}
+            onClick={() => openModal(AddEditBoardModal, { mode: "add" })}
           >
             <BoardIcon />
             <span>+ Create New Board</span>

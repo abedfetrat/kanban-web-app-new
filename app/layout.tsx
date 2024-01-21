@@ -39,8 +39,9 @@ export default function RootLayout({
         <AuthStateProvider>
           <ThemeProvider>
             <Toaster
-              position="bottom-center"
+              position="bottom-right"
               toastOptions={{
+                duration: 4000,
                 error: {
                   style: {
                     background: "#EA5555",
@@ -49,6 +50,16 @@ export default function RootLayout({
                   iconTheme: {
                     primary: "#FFFFFF",
                     secondary: "#EA5555",
+                  },
+                },
+                success: {
+                  style: {
+                    background: "#635FC7",
+                    color: "#FFFFFF",
+                  },
+                  iconTheme: {
+                    primary: "#FFFFFF",
+                    secondary: "#635FC7",
                   },
                 },
               }}

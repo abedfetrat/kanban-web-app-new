@@ -1,8 +1,8 @@
 import { FieldValue } from "firebase/firestore";
 
-export default interface Board {
+export interface Column {
   id: string;
   name: string;
   createdAt?: FieldValue;
-  columnsOrder: [];
+  boardId: string;
 }
