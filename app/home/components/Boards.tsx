@@ -5,13 +5,28 @@ import { useBoards } from "../hooks/useBoards";
 import AddEditBoardModal from "../modals/AddEditBoardModal";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
-export default function Boards(props: ComponentPropsWithoutRef<"div">) {
+type BoardsType = ComponentPropsWithoutRef<"div"> & {
+  onBoardSelected?: (id: string) => void;
+};
+
+export default function Boards({
+  onBoardSelected,
+  className,
+  ...props
+}: BoardsType) {
   const { boards, loading } = useBoards();
   const { selectedBoard, selectBoard } = useSelectedBoard();
   const { openModal } = useModal();
 
+  const handleBoardSelect = (id: string) => {
+    selectBoard(id);
+    if (onBoardSelected) {
+      onBoardSelected(id);
+    }
+  };
+
   return (
-    <div className={`font-bold text-medium-grey ${props.className}`} {...props}>
+    <div className={`font-bold text-medium-grey ${className}`} {...props}>
       <div className="px-6 py-4 text-sm uppercase tracking-[2.4px]">
         All Boards ({boards.length})
       </div>
@@ -23,7 +38,7 @@ export default function Boards(props: ComponentPropsWithoutRef<"div">) {
             key={board.id}
             board={board}
             selected={selectedBoard?.id === board.id}
-            onClick={() => selectBoard(board.id)}
+            onClick={() => handleBoardSelect(board.id)}
           />
         ))}
         <li>

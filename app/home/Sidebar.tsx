@@ -1,5 +1,3 @@
-"use client";
-
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { THEMES, useTheme } from "@/app/providers/ThemeProvider";
 import { auth } from "@/firebase/config";

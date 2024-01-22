@@ -1,5 +1,3 @@
-"use client";
-
 type ButtonType = React.ComponentPropsWithoutRef<"button"> & {
   color: "primary" | "secondary" | "danger";
   size: "small" | "large" | "variable";

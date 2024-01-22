@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentType, createContext, useContext, useState } from "react";
 import { BaseModalType } from "../components/Modal";
 

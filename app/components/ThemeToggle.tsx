@@ -1,4 +1,3 @@
-"use client";
 import { Switch } from "@headlessui/react";
 import Image from "next/image";
 import { THEMES, useTheme } from "../providers/ThemeProvider";
