@@ -1,8 +1,8 @@
-import { ComponentPropsWithoutRef, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
+import { ComponentPropsWithRef, Fragment } from "react";
 
-type OptionsMenuType = ComponentPropsWithoutRef<"div">;
+type OptionsMenuType = ComponentPropsWithRef<"div">;
 
 export default function OptionsMenu({
   children,
@@ -29,10 +29,26 @@ export default function OptionsMenu({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 top-[calc(100%+24px)] z-10 flex w-56 origin-top-right flex-col items-start gap-y-6 rounded-lg bg-white p-4 text-left text-medium-grey shadow-surface-light dark:bg-dark-grey">
+        <Menu.Items className="absolute right-0 top-[calc(100%+24px)] z-10 flex w-56 origin-top-right flex-col items-start rounded-lg bg-white py-1 text-left text-medium-grey shadow-surface-light dark:bg-dark-grey">
           {children}
         </Menu.Items>
       </Transition>
     </Menu>
+  );
+}
+
+export function OptionsItem({
+  className,
+  children,
+  ...rest
+}: ComponentPropsWithRef<"button">) {
+  return (
+    <Menu.Item
+      as={"button"}
+      className={`w-full px-4 py-3 text-start transition-colors ui-active:text-black dark:ui-active:text-white ${className}`}
+      {...rest}
+    >
+      {children}
+    </Menu.Item>
   );
 }
