@@ -1,22 +1,21 @@
-type ButtonType = React.ComponentPropsWithoutRef<"button"> & {
+import { forwardRef } from "react";
+
+type ButtonType = React.ComponentPropsWithRef<"button"> & {
   color: "primary" | "secondary" | "danger";
   size: "small" | "large" | "variable";
 };
 
-export default function Button({
-  className,
-  color,
-  size,
-  children,
-  ...props
-}: ButtonType) {
+const Button = forwardRef<HTMLButtonElement, ButtonType>(function Button(
+  { className, color, size, children, ...props }: ButtonType,
+  ref,
+) {
   const colorVariants = {
     primary:
       "text-white bg-primary hocus:bg-primary-hover disabled:hocus:bg-primary",
     secondary:
       "dark:bg-white dark:hocus:bg-white/80 text-primary bg-primary/10 hocus:bg-primary/25 disabled:hocus:bg-primary/10 disabled:dark:hocus:bg-white",
     danger:
-      "text-white bg-danger hocus:bg-danger-hocus disabled:hocus:bg-danger",
+      "text-white bg-danger hocus:bg-danger-hover disabled:hocus:bg-danger",
   };
 
   const sizeVariants = {
@@ -28,9 +27,12 @@ export default function Button({
   return (
     <button
       className={`${colorVariants[color]} ${sizeVariants[size]} rounded-full font-bold leading-none transition-colors disabled:opacity-25 ${className}`}
+      ref={ref}
       {...props}
     >
       {children}
     </button>
   );
-}
+});
+
+export default Button;

@@ -1,11 +1,12 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogProps, Transition } from "@headlessui/react";
 import { ComponentPropsWithoutRef, Fragment } from "react";
 
-export type BaseModalType = ComponentPropsWithoutRef<"div"> & {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
-};
+export type BaseModalType = ComponentPropsWithoutRef<"div"> &
+  DialogProps<"div"> & {
+    isOpen: boolean;
+    onClose: () => void;
+    title?: string;
+  };
 
 export default function Modal({
   isOpen,
@@ -13,6 +14,7 @@ export default function Modal({
   title,
   className,
   children,
+  ...rest
 }: BaseModalType) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -20,6 +22,7 @@ export default function Modal({
         as="div"
         className={`fixed inset-0 z-10 ${className}`}
         onClose={onClose}
+        {...rest}
       >
         <Transition.Child
           as={Fragment}

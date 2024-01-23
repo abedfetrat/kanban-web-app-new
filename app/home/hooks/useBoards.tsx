@@ -37,6 +37,7 @@ export function useBoards() {
             id: data.id,
             name: data.name,
             createdAt: data.createdAt,
+            columnsOrder: data.columnsOrder,
           });
         });
         setBoards(_boards);
