@@ -14,7 +14,7 @@ const Input = forwardRef<HTMLInputElement, InputType>(function Input(
   const variants = {
     normal:
       "border-light-border focus:border-black dark:border-dark-border dark:focus:border-white",
-    error: "border-danger",
+    error: "border-danger focus:border-black dark:focus:border-white",
   };
   return (
     <div className={`flex flex-col gap-y-2 ${wrapperClassName}`}>

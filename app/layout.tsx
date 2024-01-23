@@ -62,6 +62,10 @@ export default function RootLayout({
                     secondary: "#635FC7",
                   },
                 },
+                style: {
+                  maxWidth: 500,
+                  wordBreak: "break-all"
+                },
               }}
             />
             {children}

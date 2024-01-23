@@ -6,10 +6,13 @@ import AddTaskButton from "./AddTaskButton";
 import BoardOptionsMenu from "./BoardOptionsMenu";
 import BoardSelectPopover from "./BoardSelectPopover";
 import LogoContainer from "./LogoContainer";
+import { useModal } from "@/app/providers/ModalProvider";
+import AddEditTaskModal from "../modals/AddEditTaskModal";
 
 export default function Navbar() {
   const { selectedBoard, loading } = useSelectedBoard();
   const { columns } = useColumns();
+  const { openModal } = useModal();
 
   const shouldDisableAddTaskButton = !columns || columns.length === 0;
 
@@ -45,7 +48,10 @@ export default function Navbar() {
           ) : (
             selectedBoard && (
               <>
-                <AddTaskButton disabled={shouldDisableAddTaskButton} />
+                <AddTaskButton
+                  disabled={shouldDisableAddTaskButton}
+                  onClick={() => openModal(AddEditTaskModal, { mode: "add" })}
+                />
                 <BoardOptionsMenu />
               </>
             )
