@@ -6,13 +6,7 @@ import { auth, db } from "@/firebase/config";
 import { Column } from "@/firebase/models/Column";
 import { Subtask } from "@/firebase/models/Subtask";
 import { Task } from "@/firebase/models/Task";
-import {
-  FieldValue,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import { useEffect } from "react";
 import {
@@ -33,17 +27,10 @@ type AddEditTaskModalProps = {
   task?: Task;
 };
 
-type SubtaskInput = {
-  id: string;
-  name: string;
-  createdAt?: FieldValue;
-  completed: boolean;
-};
-
 export type Inputs = {
   name: string;
   description: string;
-  subtasks: SubtaskInput[];
+  subtasks: Subtask[];
   column: Column;
 };
 
@@ -106,13 +93,11 @@ export default function AddEditTaskModal({
       const tasksRef = collection(columnRef, "tasks");
       const taskRef = doc(tasksRef);
 
-      const subtasks: Record<string, Omit<Subtask, "id">> = {};
-      data.subtasks.forEach(({ name }) => {
-        const id = doc(tasksRef).id;
-        subtasks[id] = {
-          name: name.trim(),
-          completed: false,
-          createdAt: serverTimestamp(),
+      const subtasks = data.subtasks.map((subtask) => {
+        return {
+          ...subtask,
+          id: doc(tasksRef).id,
+          name: subtask.name.trim(),
         };
       });
 
@@ -133,12 +118,7 @@ export default function AddEditTaskModal({
 
   const handleEdit = async (data: Inputs) => {
     try {
-      const updatedSubtasks = data.subtasks.map((subtask) => ({
-        id: subtask.id,
-        name: subtask.name.trim(),
-        createdAt: subtask.createdAt,
-        completed: subtask.completed,
-      }));
+      // TODO: edit task
     } catch (error) {
       console.log(error);
       toast.error("Error saving changes");
