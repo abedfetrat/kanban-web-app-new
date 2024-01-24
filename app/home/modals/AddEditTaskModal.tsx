@@ -6,7 +6,15 @@ import { auth, db } from "@/firebase/config";
 import { Column } from "@/firebase/models/Column";
 import { Subtask } from "@/firebase/models/Subtask";
 import { Task } from "@/firebase/models/Task";
-import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  FieldValue,
+  arrayUnion,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import Image from "next/image";
 import { useEffect } from "react";
 import {
@@ -109,6 +117,11 @@ export default function AddEditTaskModal({
         subtasks: subtasks,
         columnId: data.column.id,
       });
+
+      await updateDoc(columnRef, {
+        tasksOrder: arrayUnion(taskRef.id),
+      });
+
       toast.success(`Created new task '${data.name.trim()}'`);
     } catch (error) {
       console.log(error);

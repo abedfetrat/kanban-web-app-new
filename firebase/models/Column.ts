@@ -4,5 +4,6 @@ export interface Column {
   id: string;
   name: string;
   createdAt?: FieldValue;
+  tasksOrder: [];
   boardId: string;
 }

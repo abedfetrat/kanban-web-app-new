@@ -96,6 +96,8 @@ export default function AddEditBoardModal({
           id: columnRef.id,
           name: col.columnName.trim(),
           createdAt: serverTimestamp(),
+          tasksOrder: [],
+          boardId: newBoardRef.id,
         });
         columnIds.push(columnRef.id);
       });
