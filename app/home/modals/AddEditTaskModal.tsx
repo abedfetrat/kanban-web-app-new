@@ -7,13 +7,11 @@ import { Column } from "@/firebase/models/Column";
 import { Subtask } from "@/firebase/models/Subtask";
 import { Task } from "@/firebase/models/Task";
 import {
-  FieldValue,
   arrayUnion,
   collection,
   doc,
   serverTimestamp,
-  setDoc,
-  updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -109,7 +107,8 @@ export default function AddEditTaskModal({
         };
       });
 
-      await setDoc(taskRef, {
+      const batch = writeBatch(db);
+      batch.set(taskRef, {
         id: taskRef.id,
         name: data.name.trim(),
         createdAt: serverTimestamp(),
@@ -117,11 +116,10 @@ export default function AddEditTaskModal({
         subtasks: subtasks,
         columnId: data.column.id,
       });
-
-      await updateDoc(columnRef, {
+      batch.update(columnRef, {
         tasksOrder: arrayUnion(taskRef.id),
       });
-
+      await batch.commit();
       toast.success(`Created new task '${data.name.trim()}'`);
     } catch (error) {
       console.log(error);

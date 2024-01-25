@@ -1,5 +1,6 @@
 import ModalProvider from "../providers/ModalProvider";
 import Sidebar from "./Sidebar";
+import Main from "./main/Main";
 import Navbar from "./navbar/Navbar";
 import SelectedBoardProvider from "./providers/SelectedBoardProvider";
 import SidebarToggleStateProvider from "./providers/SidebarToggleStateProvider";
@@ -13,6 +14,7 @@ export default function Home() {
             <Sidebar />
             <div className="flex h-screen w-full flex-col overflow-hidden">
               <Navbar />
+              <Main />
             </div>
           </div>
         </ModalProvider>
