@@ -1,4 +1,3 @@
-import Skeleton from "@/app/components/Skeleton";
 import { Column } from "@/firebase/models/Column";
 import { useTasks } from "../hooks/useTasks";
 import TaskItem from "./TaskItem";
@@ -34,15 +33,11 @@ export default function ColumnContainer({
         </p>
       </div>
       {/* Tasks */}
-      {loading ? (
-        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
-      ) : (
-        <ul className="mt-6 flex flex-col gap-y-5">
-          {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} column={column} />
-          ))}
-        </ul>
-      )}
+      <ul className="mt-6 flex flex-col gap-y-5">
+        {tasks.map((task) => (
+          <TaskItem key={task.id} task={task} column={column} />
+        ))}
+      </ul>
     </div>
   );
 }
