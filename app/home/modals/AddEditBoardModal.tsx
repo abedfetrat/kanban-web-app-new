@@ -159,7 +159,7 @@ export default function AddEditBoardModal({
               return (
                 <div key={field.id} className="flex items-start gap-x-4">
                   <Input
-                    placeholder="Column Name"
+                    placeholder="e.g. Todo"
                     wrapperClassName="w-full"
                     className="w-full"
                     error={

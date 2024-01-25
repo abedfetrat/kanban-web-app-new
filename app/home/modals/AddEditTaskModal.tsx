@@ -120,7 +120,7 @@ export default function AddEditTaskModal({
         tasksOrder: arrayUnion(taskRef.id),
       });
       await batch.commit();
-      toast.success(`Created new task '${data.name.trim()}'`);
+      toast.success(`Added new task '${data.name.trim()}'`);
     } catch (error) {
       console.log(error);
       toast.error("Error creating new task");
