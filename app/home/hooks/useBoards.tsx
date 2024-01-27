@@ -21,7 +21,7 @@ export function useBoards() {
     const uid = auth.currentUser!.uid;
     const userRef = doc(db, "users", uid);
     const boardsRef = collection(userRef, "boards");
-    const q = query(boardsRef, orderBy("createdAt", "desc"));
+    const q = query(boardsRef, orderBy("createdAt", "asc"));
 
     return onSnapshot(q, obs);
   };
