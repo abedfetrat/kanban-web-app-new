@@ -46,7 +46,7 @@ export default function BoardSelectPopover(
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Popover.Panel className="absolute top-full z-10 mt-3 w-max min-w-[264px] rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
+        <Popover.Panel className="absolute top-full z-10 mt-3 max-h-[calc(100vh-102px)] w-max min-w-[264px] overflow-y-auto rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
           {({ close }) => (
             <>
               <Boards onBoardSelected={(id) => close()} />
