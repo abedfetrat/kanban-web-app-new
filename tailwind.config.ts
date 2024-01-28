@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       screens: {
         desktop: "1400px",
+        tall: { raw: "(min-width: 768px) and (min-height: 668px)" },
       },
       colors: {
         primary: "#635FC7",
@@ -37,7 +38,7 @@ const config: Config = {
   },
   plugins: [
     require("@headlessui/tailwindcss"),
-    require('@tailwindcss/forms'),
+    require("@tailwindcss/forms"),
     plugin(function ({ addVariant }) {
       addVariant("hocus", ["&:hover", "&:focus"]);
     }),
