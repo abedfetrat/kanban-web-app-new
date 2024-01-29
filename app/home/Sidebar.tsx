@@ -11,8 +11,8 @@ export default function Sidebar() {
   const { showSidebar, toggleSidebar } = useSidebarToggleState();
 
   return showSidebar ? (
-    <aside className="hidden h-screen w-[262px] min-w-[262px] flex-col overflow-y-auto border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:flex desktop:w-[300px] desktop:min-w-[300px]">
-      <div className="flex min-h-[88px] items-center pl-6 desktop:h-[96px] desktop:pl-8">
+    <aside className="hidden h-screen w-[262px] min-w-[262px] flex-col overflow-y-scroll border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:block desktop:w-[300px] desktop:min-w-[300px] tall:flex">
+      <div className="flex h-[88px] items-center pl-6 desktop:h-[96px] desktop:pl-8">
         <Image
           src={`images/logo-${theme === THEMES.light ? "dark" : "light"}.svg`}
           width={153}
@@ -20,27 +20,26 @@ export default function Sidebar() {
           alt="kanban logo"
         />
       </div>
-      <Boards className="flex-1 pb-8 pt-4 desktop:pt-0" />
-      <div>
-        <div className="px-6">
-          <ThemeToggle />
-        </div>
-        <div className="mt-6 pr-6">
-          <button
-            onClick={() => auth.signOut()}
-            className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
-          >
-            <LogOutIcon />
-            Log out
-          </button>
-          <button
-            onClick={toggleSidebar}
-            className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
-          >
-            <HideIcon />
-            Hide Sidebar
-          </button>
-        </div>
+      <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0" />
+      <div className="relative px-6 pt-4">
+        <div className="absolute inset-x-0 -top-12 h-12 bg-gradient-to-t from-medium-grey/15 to-medium-grey/0 dark:from-very-dark-grey/45 dark:to-very-dark-grey/0"></div>
+        <ThemeToggle />
+      </div>
+      <div className="mt-6 pr-6">
+        <button
+          onClick={() => auth.signOut()}
+          className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
+        >
+          <LogOutIcon />
+          Log out
+        </button>
+        <button
+          onClick={toggleSidebar}
+          className="flex w-full items-center gap-x-3 rounded-r-full py-4 pl-6 font-bold text-medium-grey transition-colors hocus:bg-primary/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
+        >
+          <HideIcon />
+          Hide Sidebar
+        </button>
       </div>
     </aside>
   ) : (
