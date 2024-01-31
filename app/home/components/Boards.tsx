@@ -7,10 +7,12 @@ import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
 type BoardsType = ComponentPropsWithoutRef<"div"> & {
   onBoardSelected?: (id: string) => void;
+  open?: boolean;
 };
 
 export default function Boards({
   onBoardSelected,
+  open,
   className,
   ...props
 }: BoardsType) {
@@ -42,12 +44,19 @@ export default function Boards({
     const node = map.get(id);
     node?.scrollIntoView({
       block: "center",
-      behavior: "smooth",
+      behavior: "instant",
     });
   };
 
   useEffect(() => {
-    // Scroll selected board list item into view
+    // Scroll into view on every render (if used inside popover)
+    if (open && !loadingSelectedBoard && selectedBoard) {
+      scrollSelectedBoardItemIntoView(selectedBoard.id);
+    }
+  });
+
+  useEffect(() => {
+    // Scroll into view once (if used inside sidebar)
     if (!loadingSelectedBoard && selectedBoard) {
       scrollSelectedBoardItemIntoView(selectedBoard.id);
     }

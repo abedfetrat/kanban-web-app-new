@@ -47,21 +47,28 @@ export default function BoardSelectPopover(
         leaveTo="transform scale-95 opacity-0"
       >
         <div className="fixed inset-0 z-10 pb-3 pt-[88px]">
-          <Popover.Panel className="ml-[56px] max-h-full w-max min-w-[264px] overflow-y-scroll rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
-            {({ close }) => (
+          <Popover.Panel className="ml-[56px] flex max-h-full w-max min-w-[264px] flex-col rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
+            {({ open, close }) => (
               <>
-                <Boards onBoardSelected={(id) => close()} />
-                <div className="p-4 pb-0">
-                  <ThemeToggle />
-                </div>
-                <div className="px-4 py-6">
-                  <button
-                    onClick={() => auth.signOut()}
-                    className="flex items-center gap-x-3"
-                  >
-                    <LogOutIcon />
-                    Log out
-                  </button>
+                <Boards
+                  className="flex-1 overflow-y-auto pb-4"
+                  open={open}
+                  onBoardSelected={(id) => close()}
+                />
+                <div>
+                  <div className="relative p-4 pb-0">
+                    <div className="absolute inset-x-0 -top-8 h-8 bg-gradient-to-t from-medium-grey/15 to-medium-grey/0 dark:from-very-dark-grey/45 dark:to-very-dark-grey/0"></div>
+                    <ThemeToggle />
+                  </div>
+                  <div className="px-4 py-6">
+                    <button
+                      onClick={() => auth.signOut()}
+                      className="flex items-center gap-x-3"
+                    >
+                      <LogOutIcon />
+                      Log out
+                    </button>
+                  </div>
                 </div>
               </>
             )}
