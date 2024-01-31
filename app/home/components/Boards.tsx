@@ -1,6 +1,6 @@
 import { useModal } from "@/app/providers/ModalProvider";
 import Board from "@/firebase/models/Board";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, forwardRef, useEffect, useRef } from "react";
 import { useBoards } from "../hooks/useBoards";
 import AddEditBoardModal from "../modals/AddEditBoardModal";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
@@ -15,8 +15,13 @@ export default function Boards({
   ...props
 }: BoardsType) {
   const { boards, loading } = useBoards();
-  const { selectedBoard, selectBoard } = useSelectedBoard();
+  const {
+    selectedBoard,
+    selectBoard,
+    loading: loadingSelectedBoard,
+  } = useSelectedBoard();
   const { openModal } = useModal();
+  const boardItemsRef = useRef<Map<string, HTMLElement> | null>(null);
 
   const handleBoardSelect = (id: string) => {
     selectBoard(id);
@@ -24,6 +29,29 @@ export default function Boards({
       onBoardSelected(id);
     }
   };
+
+  const getBoardItemsMap = () => {
+    if (!boardItemsRef.current) {
+      boardItemsRef.current = new Map<string, HTMLElement>();
+    }
+    return boardItemsRef.current;
+  };
+
+  const scrollSelectedBoardItemIntoView = (id: string) => {
+    const map = getBoardItemsMap();
+    const node = map.get(id);
+    node?.scrollIntoView({
+      block: "center",
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    // Scroll selected board list item into view
+    if (!loadingSelectedBoard && selectedBoard) {
+      scrollSelectedBoardItemIntoView(selectedBoard.id);
+    }
+  }, [loadingSelectedBoard]);
 
   return (
     <div className={`font-bold text-medium-grey ${className}`} {...props}>
@@ -39,6 +67,14 @@ export default function Boards({
             board={board}
             selected={selectedBoard?.id === board.id}
             onClick={() => handleBoardSelect(board.id)}
+            ref={(node) => {
+              const map = getBoardItemsMap();
+              if (node) {
+                map.set(board.id, node);
+              } else {
+                map.delete(board.id);
+              }
+            }}
           />
         ))}
         <li>
@@ -64,30 +100,30 @@ const BoardIcon = () => (
   </svg>
 );
 
-const BoardItem = ({
-  board,
-  selected,
-  onClick,
-}: {
+type BoardItemProps = {
   board: Board;
   selected: boolean;
   onClick: () => void;
-}) => {
-  const variant = selected
-    ? "bg-primary text-white"
-    : "hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary";
-  return (
-    <li>
-      <button
-        className={`${variant} flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors`}
-        onClick={onClick}
-      >
-        <BoardIcon />
-        <span className="truncate">{board.name}</span>
-      </button>
-    </li>
-  );
 };
+
+const BoardItem = forwardRef<HTMLLIElement, BoardItemProps>(
+  ({ board, selected, onClick }: BoardItemProps, ref) => {
+    const variant = selected
+      ? "bg-primary text-white"
+      : "hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary";
+    return (
+      <li ref={ref}>
+        <button
+          className={`${variant} flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold transition-colors`}
+          onClick={onClick}
+        >
+          <BoardIcon />
+          <span className="truncate">{board.name}</span>
+        </button>
+      </li>
+    );
+  },
+);
 
 const SkeletonItem = () => (
   <div
