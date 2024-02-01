@@ -2,6 +2,8 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import Modal from "@/app/components/Modal";
 import { auth, db } from "@/firebase/config";
+import { Column } from "@/firebase/models/Column";
+import compareColumns from "@/firebase/utils/compareColumns";
 import {
   collection,
   doc,
@@ -114,12 +116,64 @@ export default function AddEditBoardModal({
     }
   };
 
-  const handleEdit = (data: Inputs) => {
+  const handleEdit = async (data: Inputs) => {
     try {
-      const newColumns = data.boardColumns.map((col) => ({
+      if (!selectedBoard) {
+        throw new Error("No board selected");
+      }
+      const oldColumns = columns;
+      const newColumns: Column[] = data.boardColumns.map((col) => ({
         id: col.columnId,
         name: col.columnName.trim(),
+        tasksOrder: [],
+        boardId: "",
       }));
+
+      const uid = auth.currentUser!.uid;
+      const userRef = doc(db, "users", uid);
+      const boardsRef = collection(userRef, "boards");
+      const boardRef = doc(boardsRef, selectedBoard.id);
+      const columnsRef = collection(boardRef, "columns");
+
+      let columnsOrder: string[] = selectedBoard.columnsOrder;
+      const batch = writeBatch(db);
+      const { added, updated, deleted } = compareColumns(
+        oldColumns,
+        newColumns,
+      );
+
+      // Add all new columns to db
+      added.forEach((col) => {
+        const columnRef = doc(columnsRef);
+        batch.set(columnRef, {
+          id: columnRef.id,
+          name: col.name,
+          createdAt: serverTimestamp(),
+        });
+        columnsOrder.push(columnRef.id);
+      });
+
+      // Update db with updated columns
+      updated.forEach((col) => {
+        const columnRef = doc(columnsRef, col.id);
+        batch.update(columnRef, { name: col.name });
+      });
+
+      // Delete columns from db
+      deleted.forEach((col) => {
+        const columnRef = doc(columnsRef, col.id);
+        batch.delete(columnRef);
+        columnsOrder = columnsOrder.filter((id) => id !== columnRef.id);
+      });
+
+      // Update board with new name and column order
+      await updateDoc(boardRef, {
+        name: data.boardName.trim(),
+        columnsOrder: columnsOrder,
+      });
+
+      await batch.commit();
+      toast.success(`Edited board '${selectedBoard!.name}'`);
     } catch (error) {
       console.log(error);
       toast.error("Error editing board.");
