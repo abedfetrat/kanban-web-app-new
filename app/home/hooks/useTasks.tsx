@@ -31,7 +31,7 @@ export function useTasks(column: Column) {
 
       const q = query(tasksRef);
 
-      return onSnapshot(q, obs);
+      return onSnapshot(q, { includeMetadataChanges: true }, obs);
     };
 
     let unsubscribe = () => {};

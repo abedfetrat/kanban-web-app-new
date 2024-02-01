@@ -2,6 +2,7 @@ import { useModal } from "@/app/providers/ModalProvider";
 import { useMemo } from "react";
 import { Task } from "@/firebase/models/Task";
 import { Column } from "@/firebase/models/Column";
+import TaskDetailModal from "../modals/TaskDetailModal";
 
 export default function TaskItem({
   task,
@@ -10,7 +11,7 @@ export default function TaskItem({
   task: Task;
   column: Column;
 }) {
-  //const { openModal } = useModal();
+  const { openModal } = useModal();
 
   const numCompletedSubtasks = useMemo(
     () => task.subtasks.filter((t) => t.completed).length,
@@ -21,7 +22,9 @@ export default function TaskItem({
   return (
     <li>
       <button
-        onClick={() => {}}
+        onClick={() =>
+          openModal(TaskDetailModal, { taskId: task.id, column: column })
+        }
         className="w-full rounded-lg bg-white px-4 py-6 text-start shadow-surface-light outline-none hocus:text-primary dark:bg-dark-grey dark:shadow-surface-dark"
       >
         <h4 className="font-bold transition-colors">{task.name}</h4>
