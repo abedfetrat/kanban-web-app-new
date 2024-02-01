@@ -1,10 +1,15 @@
 import ThemeToggle from "@/app/components/ThemeToggle";
+import { useModal } from "@/app/providers/ModalProvider";
 import { auth } from "@/firebase/config";
+import Board from "@/firebase/models/Board";
 import { Popover, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { ComponentPropsWithoutRef, Fragment } from "react";
-import Boards from "../components/Boards";
+import { ComponentPropsWithoutRef, Fragment, useEffect, useRef } from "react";
+import BoardIcon from "../components/BoardIcon";
+import BoardListItem from "../components/BoardListItem";
 import LogOutIcon from "../components/LogOutIcon";
+import { useBoards } from "../hooks/useBoards";
+import AddEditBoardModal from "../modals/AddEditBoardModal";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 
 export default function BoardSelectPopover(
@@ -50,11 +55,7 @@ export default function BoardSelectPopover(
           <Popover.Panel className="ml-[56px] flex max-h-full w-max min-w-[264px] flex-col rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
             {({ open, close }) => (
               <>
-                <Boards
-                  className="flex-1 overflow-y-auto pb-4"
-                  open={open}
-                  onBoardSelected={(id) => close()}
-                />
+                <BoardList isPopoverOpen={open} onClosePopover={close} />
                 <div>
                   <div className="relative p-4 pb-0">
                     <div className="absolute inset-x-0 -top-8 h-8 bg-gradient-to-t from-medium-grey/15 to-medium-grey/0 dark:from-very-dark-grey/45 dark:to-very-dark-grey/0"></div>
@@ -76,5 +77,72 @@ export default function BoardSelectPopover(
         </div>
       </Transition>
     </Popover>
+  );
+}
+
+function BoardList({
+  isPopoverOpen,
+  onClosePopover,
+}: {
+  isPopoverOpen: boolean;
+  onClosePopover: () => void;
+}) {
+  const { openModal } = useModal();
+  const { selectedBoard, selectBoard } = useSelectedBoard();
+  const { boards } = useBoards();
+  const selectedItemRef = useRef<HTMLElement | null>(null);
+
+  const scrollSelectedListItemToView = () => {
+    selectedItemRef.current?.scrollIntoView({
+      block: "center",
+      behavior: "instant",
+    });
+  };
+
+  useEffect(() => {
+    if (isPopoverOpen && selectedBoard) {
+      scrollSelectedListItemToView();
+    }
+  });
+
+  return (
+    <div className="flex-1 overflow-y-auto pb-4 font-bold text-medium-grey">
+      <div className="px-6 py-4 text-sm uppercase tracking-[2.4px]">
+        All Boards ({boards.length})
+      </div>
+      <ul className="pr-6">
+        {boards.map((board: Board) => {
+          const isSelected = board.id === selectedBoard?.id;
+          return (
+            <BoardListItem
+              key={board.id}
+              board={board}
+              isSelected={isSelected}
+              onClick={() => {
+                selectBoard(board.id);
+                onClosePopover();
+              }}
+              ref={(node) => {
+                if (!isSelected) return;
+                if (node) {
+                  selectedItemRef.current = node;
+                } else {
+                  selectedItemRef.current = null;
+                }
+              }}
+            />
+          );
+        })}
+        <li>
+          <button
+            className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
+            onClick={() => openModal(AddEditBoardModal, { mode: "add" })}
+          >
+            <BoardIcon />
+            <span>+ Create New Board</span>
+          </button>
+        </li>
+      </ul>
+    </div>
   );
 }

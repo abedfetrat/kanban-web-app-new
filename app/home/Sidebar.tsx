@@ -1,14 +1,46 @@
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { THEMES, useTheme } from "@/app/providers/ThemeProvider";
 import { auth } from "@/firebase/config";
+import Board from "@/firebase/models/Board";
 import Image from "next/image";
-import Boards from "./components/Boards";
+import { useEffect, useRef, useState } from "react";
+import Skeleton from "../components/Skeleton";
+import { useModal } from "../providers/ModalProvider";
+import BoardIcon from "./components/BoardIcon";
+import BoardListItem from "./components/BoardListItem";
 import LogOutIcon from "./components/LogOutIcon";
+import { useBoards } from "./hooks/useBoards";
+import AddEditBoardModal from "./modals/AddEditBoardModal";
+import { useSelectedBoard } from "./providers/SelectedBoardProvider";
 import { useSidebarToggleState } from "./providers/SidebarToggleStateProvider";
 
 export default function Sidebar() {
   const { theme } = useTheme();
   const { showSidebar, toggleSidebar } = useSidebarToggleState();
+  const { boards, loading } = useBoards();
+  const { selectedBoard, selectBoard } = useSelectedBoard();
+  const { openModal } = useModal();
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  const selectedListItemRef = useRef<HTMLElement | null>(null);
+
+  const handleShowSidebar = () => {
+    toggleSidebar();
+    setIsFirstRender(true);
+  };
+
+  const scrollSelectedListItemToView = () => {
+    selectedListItemRef.current?.scrollIntoView({
+      block: "center",
+      behavior: "instant",
+    });
+  };
+
+  useEffect(() => {
+    if (isFirstRender && selectedBoard) {
+      scrollSelectedListItemToView();
+      setIsFirstRender(false);
+    }
+  }, [isFirstRender, selectedBoard]);
 
   return showSidebar ? (
     <aside className="hidden h-screen w-[262px] min-w-[262px] flex-col overflow-y-scroll border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:block desktop:w-[300px] desktop:min-w-[300px] tall:flex">
@@ -20,7 +52,43 @@ export default function Sidebar() {
           alt="kanban logo"
         />
       </div>
-      <Boards className="flex-1 overflow-y-auto pb-8 pt-4 desktop:pt-0" />
+      <div className="flex-1 overflow-y-auto pb-8 pt-4 font-bold text-medium-grey desktop:pt-0">
+        <div className="px-6 py-4 text-sm uppercase tracking-[2.4px]">
+          All Boards ({boards.length})
+        </div>
+        <ul className="pr-6">
+          {loading &&
+            new Array(2).fill(null).map((_, i) => <ListItemSkeleton key={i} />)}
+          {boards.map((board: Board) => {
+            const isSelected = board.id === selectedBoard?.id;
+            return (
+              <BoardListItem
+                key={board.id}
+                board={board}
+                isSelected={isSelected}
+                onClick={() => selectBoard(board.id)}
+                ref={(node) => {
+                  if (!isSelected) return;
+                  if (node) {
+                    selectedListItemRef.current = node;
+                  } else {
+                    selectedListItemRef.current = null;
+                  }
+                }}
+              />
+            );
+          })}
+          <li>
+            <button
+              className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4 font-bold text-primary transition-colors hocus:bg-primary-hover/10 hocus:text-primary dark:hocus:bg-white dark:hocus:text-primary"
+              onClick={() => openModal(AddEditBoardModal, { mode: "add" })}
+            >
+              <BoardIcon />
+              <span>+ Create New Board</span>
+            </button>
+          </li>
+        </ul>
+      </div>
       <div className="relative px-6 pt-4">
         <div className="absolute inset-x-0 -top-12 h-12 bg-gradient-to-t from-medium-grey/15 to-medium-grey/0 dark:from-very-dark-grey/45 dark:to-very-dark-grey/0"></div>
         <ThemeToggle />
@@ -44,13 +112,20 @@ export default function Sidebar() {
     </aside>
   ) : (
     <button
-      onClick={toggleSidebar}
+      onClick={handleShowSidebar}
       className="fixed bottom-8 left-0 rounded-r-full bg-primary py-[19px] pl-[18px] pr-[22px] transition-colors hocus:bg-primary-hover"
     >
       <ShowIcon />
     </button>
   );
 }
+
+const ListItemSkeleton = () => (
+  <div className="flex w-full items-center gap-x-4 rounded-r-full px-6 py-4">
+    <Skeleton className="h-5 min-w-5" />
+    <Skeleton className="h-5 w-full" />
+  </div>
+);
 
 const HideIcon = () => (
   <svg width="18" height="16">
