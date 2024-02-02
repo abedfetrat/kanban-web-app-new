@@ -20,6 +20,7 @@ import OptionsMenu, { OptionsItem } from "../components/OptionsMenu";
 import { useColumns } from "../hooks/useColumns";
 import { useTasks } from "../hooks/useTasks";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 type TaskDetailModalType = BaseModalType & {
   taskId: string;
@@ -191,7 +192,12 @@ function TaskOptionsMenu({ column, task }: { column: Column; task: Task }) {
   return (
     <OptionsMenu>
       <OptionsItem>Edit task</OptionsItem>
-      <OptionsItem className="text-danger">Delete task</OptionsItem>
+      <OptionsItem
+        className="text-danger"
+        onClick={() => openModal(DeleteTaskModal, { task, column })}
+      >
+        Delete task
+      </OptionsItem>
     </OptionsMenu>
   );
 }
