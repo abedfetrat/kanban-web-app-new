@@ -34,6 +34,7 @@ export default function DeleteBoardModal({ isOpen, onClose }: BaseModalType) {
         name: data.name,
         createdAt: data.createdAt,
         boardId: data.boardId,
+        tasksOrder: data.tasksOrder,
       });
     });
 
