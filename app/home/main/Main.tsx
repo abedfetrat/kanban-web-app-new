@@ -80,19 +80,19 @@ function LoadingState() {
   return (
     <Container className="flex gap-x-6">
       <div className="min-w-[280px]">
-        <Skeleton className="h-6 bg-[#E9EFFA] dark:!bg-dark-grey" />
-        <Skeleton className="mt-6 h-[96px] bg-[#E9EFFA] dark:!bg-dark-grey" />
-        <Skeleton className="mt-6 h-[96px] bg-[#E9EFFA] dark:!bg-dark-grey" />
-        <Skeleton className="mt-6 h-[96px] bg-[#E9EFFA] dark:!bg-dark-grey" />
+        <Skeleton className="h-6 bg-white dark:!bg-dark-grey" />
+        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
+        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
+        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
       </div>
       <div className="min-w-[280px]">
-        <Skeleton className="h-6 bg-[#E9EFFA] dark:!bg-dark-grey" />
-        <Skeleton className="mt-6 h-[96px] bg-[#E9EFFA] dark:!bg-dark-grey" />
-        <Skeleton className="mt-6 h-[96px] bg-[#E9EFFA] dark:!bg-dark-grey" />
+        <Skeleton className="h-6 bg-white dark:!bg-dark-grey" />
+        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
+        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
       </div>
       <div className="min-w-[280px]">
-        <Skeleton className="h-6 bg-[#E9EFFA] dark:!bg-dark-grey" />
-        <Skeleton className="mt-6 h-[96px] bg-[#E9EFFA] dark:!bg-dark-grey" />
+        <Skeleton className="h-6 bg-white dark:!bg-dark-grey" />
+        <Skeleton className="mt-6 h-[96px] bg-white dark:!bg-dark-grey" />
       </div>
     </Container>
   );

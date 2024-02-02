@@ -11,7 +11,7 @@ export default function OptionsMenu({
 }: OptionsMenuType) {
   return (
     <Menu as="div" className={`relative leading-none ${className}`} {...props}>
-      <Menu.Button>
+      <Menu.Button className="p-2">
         <Image
           src="/images/icon-vertical-ellipsis.svg"
           width={5}
