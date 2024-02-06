@@ -6,11 +6,13 @@ import { auth, db } from "@/firebase/config";
 import { Column } from "@/firebase/models/Column";
 import { Subtask } from "@/firebase/models/Subtask";
 import { Task } from "@/firebase/models/Task";
+import changeTaskColumn from "@/firebase/utils/changeTaskColumn";
 import {
   arrayUnion,
   collection,
   doc,
   serverTimestamp,
+  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import Image from "next/image";
@@ -46,6 +48,12 @@ export default function AddEditTaskModal({
   onClose,
   task,
 }: AddEditTaskModalProps) {
+  if (mode === "edit" && !task) {
+    throw new Error(
+      "Task modal was used in edit mode without providing a task prop.",
+    );
+  }
+
   const { selectedBoard } = useSelectedBoard();
   const { columns } = useColumns();
 
@@ -128,8 +136,49 @@ export default function AddEditTaskModal({
   };
 
   const handleEdit = async (data: Inputs) => {
+    if (!task) {
+      throw new Error("Edit task function was used incorrectly");
+    }
+    
     try {
-      // TODO: edit task
+      const boardId = selectedBoard!.id;
+      const uid = auth.currentUser!.uid;
+      const columnsRef = collection(
+        db,
+        `users/${uid}/boards/${boardId}/columns/`,
+      );
+      const tasksRef = collection(columnsRef, `${task.columnId}/tasks`);
+      const taskRef = doc(tasksRef, task.id);
+
+      const updatedSubtasks: Subtask[] = data.subtasks.map((subtask) => {
+        if (!subtask.id) {
+          subtask.id = doc(tasksRef).id;
+        }
+        subtask.name = subtask.name.trim();
+        return subtask;
+      });
+      const updatedTask: Task = {
+        ...task,
+        name: data.name,
+        description: data.description,
+        subtasks: updatedSubtasks,
+      };
+
+      const oldColumnId = task.columnId;
+      const newColumnId = data.column.id;
+      if (oldColumnId !== newColumnId) {
+        await changeTaskColumn(
+          updatedTask,
+          oldColumnId,
+          newColumnId,
+          columnsRef,
+        );
+      } else {
+        await updateDoc(taskRef, {
+          ...updatedTask,
+        });
+      }
+      toast.success("Task edited successfully");
     } catch (error) {
       console.log(error);
       toast.error("Error saving changes");

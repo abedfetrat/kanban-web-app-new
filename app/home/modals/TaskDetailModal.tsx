@@ -21,6 +21,8 @@ import { useColumns } from "../hooks/useColumns";
 import { useTasks } from "../hooks/useTasks";
 import { useSelectedBoard } from "../providers/SelectedBoardProvider";
 import DeleteTaskModal from "./DeleteTaskModal";
+import AddEditTaskModal from "./AddEditTaskModal";
+import changeTaskColumn from "@/firebase/utils/changeTaskColumn";
 
 type TaskDetailModalType = BaseModalType & {
   taskId: string;
@@ -83,36 +85,11 @@ export default function TaskDetailModal({
 
     try {
       const uid = auth.currentUser!.uid;
-      const userRef = doc(db, "users", uid);
-      const boardsRef = collection(userRef, "boards");
-      const boardRef = doc(boardsRef, selectedBoard!.id);
-      const columnsRef = collection(boardRef, "columns");
-
-      const oldColumnRef = doc(columnsRef, column.id);
-      const oldTasksRef = collection(oldColumnRef, "tasks");
-      const oldTaskRef = doc(oldTasksRef, task.id);
-
-      const newColumnRef = doc(columnsRef, newColumn.id);
-      const newTasksRef = collection(newColumnRef, "tasks");
-      const newTaskRef = doc(newTasksRef);
-
-      const batch = writeBatch(db);
-      batch.set(newTaskRef, {
-        ...task,
-        id: newTaskRef.id,
-        subtasks: task.subtasks,
-      });
-      batch.delete(oldTaskRef);
-      // Delete taskId from old column tasks order array
-      batch.update(oldColumnRef, {
-        tasksOrder: arrayRemove(task.id),
-      });
-      // Add taskId to new column tasks order array
-      batch.update(newColumnRef, {
-        tasksOrder: arrayUnion(newTaskRef.id),
-      });
-
-      await batch.commit();
+      const columnsRef = collection(
+        db,
+        `users/${uid}/boards/${selectedBoard!.id}/columns`,
+      );
+      await changeTaskColumn(task, column.id, newColumn.id, columnsRef);
       onClose();
     } catch (error) {
       console.log(error);
@@ -191,7 +168,11 @@ function TaskOptionsMenu({ column, task }: { column: Column; task: Task }) {
 
   return (
     <OptionsMenu>
-      <OptionsItem>Edit task</OptionsItem>
+      <OptionsItem
+        onClick={() => openModal(AddEditTaskModal, { mode: "edit", task })}
+      >
+        Edit task
+      </OptionsItem>
       <OptionsItem
         className="text-danger"
         onClick={() => openModal(DeleteTaskModal, { task, column })}
