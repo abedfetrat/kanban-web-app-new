@@ -100,12 +100,15 @@ export default function TaskDetailModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="mb-4 flex items-center justify-between gap-x-4 md:mb-6">
-        <Dialog.Title as="h3" className="text-lg font-bold md:text-xl">
+        <Dialog.Title
+          as="h3"
+          className="break-all text-lg font-bold md:text-xl"
+        >
           {task.name}
         </Dialog.Title>
         <TaskOptionsMenu column={column} task={task} />
       </div>
-      <p className="text-sm font-medium text-medium-grey md:text-base">
+      <p className="break-all text-sm font-medium text-medium-grey md:text-base">
         {task.description}
       </p>
       {task.subtasks && task.subtasks.length > 0 && (
@@ -145,7 +148,7 @@ function Subtask({
   onCompletionChanged: (subtaskId: string, completed: boolean) => void;
 }) {
   return (
-    <div className="rounded-md bg-light-grey p-3 dark:bg-very-dark-grey">
+    <div className="break-all rounded-md bg-light-grey p-3 dark:bg-very-dark-grey">
       <label
         className={`flex items-center gap-x-4 text-sm font-bold md:text-base ${
           subtask.completed && "text-medium-grey line-through"

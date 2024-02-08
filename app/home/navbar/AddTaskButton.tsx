@@ -14,7 +14,7 @@ export default function AddTaskButton(
         alt=""
         className="min-w-[12px] md:hidden"
       />
-      <span className="hidden md:inline">+ Add New Task</span>
+      <span className="hidden break-keep md:inline">+ Add New Task</span>
     </Button>
   );
 }

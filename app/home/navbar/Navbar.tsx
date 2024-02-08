@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <header className="relative flex min-h-[76px] border-light-border bg-white dark:border-dark-border dark:bg-dark-grey md:min-h-[90px] md:border-b-2">
       <LogoContainer />
-      <div className="flex w-full items-center gap-x-4 px-4 py-5 desktop:px-8 desktop:pb-7">
+      <div className="flex w-full items-center gap-x-4 px-4 py-5 desktop:px-6 desktop:pb-7">
         <Image
           src="/images/logo-mobile.svg"
           width={24}
@@ -30,16 +30,16 @@ export default function Navbar() {
         {loading ? (
           <Skeleton className="h-7 w-32 md:hidden" />
         ) : (
-          <BoardSelectPopover className="md:hidden" />
+          <BoardSelectPopover />
         )}
         {loading ? (
           <Skeleton className="hidden h-7 w-32 md:block" />
         ) : (
-          <h1 className="hidden text-xl font-bold md:block desktop:text-2xl">
+          <h1 className="hidden truncate text-xl font-bold md:block md:text-2xl">
             {selectedBoard ? selectedBoard.name : "Select a board"}
           </h1>
         )}
-        <div className="flex flex-grow items-center justify-end gap-x-4">
+        <div className="flex flex-shrink-0 flex-grow items-center justify-end gap-x-4">
           {loading ? (
             <>
               <Skeleton className="h-7 w-12 justify-end rounded-3xl md:w-40" />

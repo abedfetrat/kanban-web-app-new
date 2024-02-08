@@ -24,11 +24,13 @@ export default function ColumnContainer({
   })();
 
   return (
-    <div className="h-fit min-w-[280px]">
+    <div className="h-fit w-[280px] min-w-[280px]">
       {/* Header */}
       <div className="flex items-center gap-x-3">
-        <div className={`h-[15px] w-[15px] rounded-full ${color}`}></div>
-        <p className="text-xs font-bold uppercase tracking-[2.4px] text-medium-grey">
+        <div
+          className={`h-[15px] w-[15px] shrink-0 rounded-full ${color}`}
+        ></div>
+        <p className="truncate text-xs font-bold uppercase tracking-[2.4px] text-medium-grey">
           {column.name} ({tasks.length})
         </p>
       </div>

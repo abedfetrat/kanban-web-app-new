@@ -44,7 +44,7 @@ export default function Sidebar() {
 
   return showSidebar ? (
     <aside className="hidden h-screen w-[262px] min-w-[262px] flex-col overflow-y-scroll border-r-2 border-light-border bg-white pb-8 dark:border-dark-border dark:bg-dark-grey md:block desktop:w-[300px] desktop:min-w-[300px] tall:flex">
-      <div className="flex h-[88px] items-center pl-6 desktop:h-[96px] desktop:pl-8">
+      <div className="flex h-[88px] items-center py-5 pb-7 pl-6 desktop:h-[88px]">
         <Image
           src={`images/logo-${theme === THEMES.light ? "dark" : "light"}.svg`}
           width={153}

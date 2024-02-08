@@ -45,7 +45,7 @@ export default function Modal({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="w-full max-w-xl transform rounded-md bg-white p-6 text-left align-middle transition-all dark:bg-dark-grey md:p-8">
+            <Dialog.Panel className="w-full max-w-[calc(100vw-32px)] transform rounded-md bg-white p-6 text-left align-middle transition-all dark:bg-dark-grey md:max-w-xl md:p-8">
               {title && (
                 <div className="mb-4 md:mb-6">
                   <Dialog.Title

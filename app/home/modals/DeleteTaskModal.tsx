@@ -24,7 +24,7 @@ export default function DeleteTaskModal({
 }: TaskDetailModalProps) {
   const { selectedBoard } = useSelectedBoard();
   const { openModal } = useModal();
-  
+
   const cancelButtonRef = useRef(null);
 
   const handleDelete = async () => {
@@ -69,7 +69,7 @@ export default function DeleteTaskModal({
           Delete this task?
         </Dialog.Title>
       </div>
-      <p className="font-medium text-medium-grey">
+      <p className="break-all font-medium text-medium-grey">
         Are you sure you want to delete the `{task.name}` task and its subtasks?
         This action cannot be reversed.
       </p>

@@ -27,7 +27,7 @@ export default function TaskItem({
         }
         className="w-full rounded-lg bg-white px-4 py-6 text-start shadow-surface-light outline-none hocus:text-primary dark:bg-dark-grey dark:shadow-surface-dark"
       >
-        <h4 className="font-bold transition-colors">{task.name}</h4>
+        <h4 className="line-clamp-3 break-words font-bold transition-colors">{task.name}</h4>
         <p className="mt-2 text-xs font-bold text-medium-grey">
           {numCompletedSubtasks} of {numSubtasks} subtasks
         </p>

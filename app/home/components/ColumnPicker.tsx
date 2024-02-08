@@ -37,7 +37,7 @@ export default function ColumnPicker<T extends FieldValues>({
             Status
           </Listbox.Label>
           <Listbox.Button
-            className={`mt-2 flex w-full items-center justify-between rounded-[4px] border-[2px] border-light-border bg-transparent px-4 py-2 text-start font-medium leading-relaxed outline-none placeholder:text-black/25  focus:border-black dark:border-dark-border dark:placeholder:text-white/25 dark:focus:border-white ${
+            className={`w-full mt-2 flex items-center justify-between rounded-[4px] border-[2px] border-light-border bg-transparent px-4 py-2 text-start font-medium leading-relaxed outline-none placeholder:text-black/25  focus:border-black dark:border-dark-border dark:placeholder:text-white/25 dark:focus:border-white ${
               open && "border-primary dark:border-primary"
             }`}
           >
@@ -63,7 +63,7 @@ export default function ColumnPicker<T extends FieldValues>({
                 <Listbox.Option
                   key={col.id}
                   value={col}
-                  className="cursor-default select-none px-4 py-3 font-medium text-medium-grey ui-active:bg-primary-hover/10 ui-active:text-primary dark:ui-active:bg-dark-grey"
+                  className="truncate cursor-default select-none px-4 py-3 font-medium text-medium-grey ui-active:bg-primary-hover/10 ui-active:text-primary dark:ui-active:bg-dark-grey"
                 >
                   {col.name}
                 </Listbox.Option>

@@ -29,7 +29,7 @@ export default function OptionsMenu({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 top-[calc(100%+24px)] z-10 flex w-56 origin-top-right flex-col items-start rounded-lg bg-white py-1 text-left text-medium-grey shadow-surface-light dark:bg-dark-grey">
+        <Menu.Items className="absolute right-0 top-[calc(100%+8px)] z-10 flex w-56 origin-top-right flex-col items-start rounded-lg bg-white py-1 text-left text-medium-grey shadow-surface-light dark:bg-dark-grey">
           {children}
         </Menu.Items>
       </Transition>

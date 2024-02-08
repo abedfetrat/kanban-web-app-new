@@ -66,7 +66,7 @@ export default function Dropdown<T>({
                 <Listbox.Option
                   key={mapOptionToId(option)}
                   value={option}
-                  className="cursor-default select-none px-4 py-3 font-medium text-medium-grey ui-active:bg-primary-hover/10 ui-active:text-primary dark:ui-active:bg-dark-grey"
+                  className="truncate cursor-default select-none px-4 py-3 font-medium text-medium-grey ui-active:bg-primary-hover/10 ui-active:text-primary dark:ui-active:bg-dark-grey"
                 >
                   {mapOptionToLabel(option)}
                 </Listbox.Option>

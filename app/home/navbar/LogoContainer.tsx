@@ -5,7 +5,7 @@ export default function LogoContainer() {
   const { showSidebar } = useSidebarToggleState();
   return (
     !showSidebar && (
-      <div className="hidden place-items-center border-r-2 border-light-border px-6 py-4 dark:border-dark-border md:grid desktop:px-8">
+      <div className="hidden place-items-center border-r-2 border-light-border px-6 py-5 pb-7 dark:border-dark-border md:grid">
         <Image
           src="/images/logo-dark.svg"
           width={153}

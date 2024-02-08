@@ -18,8 +18,8 @@ export default function BoardSelectPopover(
   const { selectedBoard } = useSelectedBoard();
 
   return (
-    <Popover className="relative" {...props}>
-      <Popover.Button className="flex items-center gap-x-3 text-lg font-bold leading-tight">
+    <Popover className="relative w-full min-w-0 md:hidden">
+      <Popover.Button className="flex w-full min-w-0 max-w-fit items-center gap-x-3 text-lg font-bold leading-tight">
         <span className="truncate">
           {selectedBoard ? selectedBoard.name : "Select board"}
         </span>
@@ -51,8 +51,8 @@ export default function BoardSelectPopover(
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <div className="fixed inset-0 z-10 pb-3 pt-[88px]">
-          <Popover.Panel className="ml-[56px] flex max-h-full w-max min-w-[264px] flex-col rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
+        <div className="fixed inset-0 z-10 pb-3 pl-[56px] pr-4 pt-[88px]">
+          <Popover.Panel className="flex max-h-full w-full min-w-[264px] max-w-fit flex-col rounded-lg bg-white font-bold text-medium-grey dark:bg-dark-grey">
             {({ open, close }) => (
               <>
                 <BoardList isPopoverOpen={open} onClosePopover={close} />

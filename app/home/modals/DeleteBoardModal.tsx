@@ -105,7 +105,7 @@ export default function DeleteBoardModal({ isOpen, onClose }: BaseModalType) {
           Delete this board?
         </Dialog.Title>
       </div>
-      <p className="font-medium text-medium-grey">
+      <p className="break-all font-medium text-medium-grey">
         Are you sure you want to delete the `{selectedBoard?.name || ""}` board?
         This action will remove all columns and tasks and cannot be reversed.
       </p>
