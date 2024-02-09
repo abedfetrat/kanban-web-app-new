@@ -178,7 +178,7 @@ export default function AddEditTaskModal({
           ...updatedTask,
         });
       }
-      toast.success("Task edited successfully");
+      toast.success("Successfully edited task");
     } catch (error) {
       console.log(error);
       toast.error("Error saving changes");

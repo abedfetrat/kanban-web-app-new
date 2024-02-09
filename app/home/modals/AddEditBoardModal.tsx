@@ -173,7 +173,7 @@ export default function AddEditBoardModal({
       });
 
       await batch.commit();
-      toast.success(`Edited board '${selectedBoard!.name}'`);
+      toast.success("Successfully edited board");
     } catch (error) {
       console.log(error);
       toast.error("Error editing board.");
