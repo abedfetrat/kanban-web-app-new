@@ -92,7 +92,7 @@ export default function AddEditTaskModal({
         column: column,
       });
     } else {
-      setValue("column", columns[0]);
+      reset(defaultFormValues);
     }
   }, [mode, reset, columns, setValue, task]);
 

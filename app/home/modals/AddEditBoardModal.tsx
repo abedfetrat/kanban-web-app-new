@@ -69,8 +69,10 @@ export default function AddEditBoardModal({
           })),
         });
       } else {
-        reset({ boardName: selectedBoard.name });
+        reset({ boardName: selectedBoard.name, boardColumns: [] });
       }
+    } else {
+      reset({ boardName: "", boardColumns: [] });
     }
   }, [mode, selectedBoard, columns, reset]);
 
