@@ -2,6 +2,7 @@
 
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
+import { useMounted } from "@/app/hooks/useMounted";
 import { auth } from "@/firebase/config";
 import {
   isSignInWithEmailLink,
@@ -20,17 +21,18 @@ type Inputs = {
 const STORAGE_EMAIL_KEY = "emailForSignIn";
 
 export default function Page() {
+  const mounted = useMounted();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      email: localStorage.getItem(STORAGE_EMAIL_KEY) || "",
+      email: localStorage?.getItem(STORAGE_EMAIL_KEY) || "",
     },
   });
   const [success, setSuccess] = useState(false);
-  const link = location.href;
+  const link = location?.href;
   const isSignIn = isSignInWithEmailLink(auth, link);
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
@@ -57,6 +59,8 @@ export default function Page() {
       }
     }
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="h-full">
