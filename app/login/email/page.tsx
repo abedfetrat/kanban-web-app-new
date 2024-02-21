@@ -26,18 +26,18 @@ export default function Page() {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      email: window.localStorage.getItem(STORAGE_EMAIL_KEY) || "",
+      email: localStorage.getItem(STORAGE_EMAIL_KEY) || "",
     },
   });
   const [success, setSuccess] = useState(false);
-  const link = window.location.href;
+  const link = location.href;
   const isSignIn = isSignInWithEmailLink(auth, link);
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
     if (isSignIn) {
       try {
         await signInWithEmailLink(auth, email, link);
-        window.localStorage.removeItem(STORAGE_EMAIL_KEY);
+        localStorage.removeItem(STORAGE_EMAIL_KEY);
       } catch (error) {
         console.log(error);
         toast.error("Error while loggin in. Please try again.");
@@ -50,7 +50,7 @@ export default function Page() {
         };
         await sendSignInLinkToEmail(auth, email, actionCodeSettings);
         setSuccess(true);
-        window.localStorage.setItem(STORAGE_EMAIL_KEY, email);
+        localStorage.setItem(STORAGE_EMAIL_KEY, email);
       } catch (error) {
         console.log(error);
         toast.error("Error while sending login link. Please try again soon.");
