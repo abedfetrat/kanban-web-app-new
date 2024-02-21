@@ -39,7 +39,7 @@ export default function Page() {
     if (isSignIn) {
       try {
         await signInWithEmailLink(auth, email, link);
-        localStorage.removeItem(STORAGE_EMAIL_KEY);
+        localStorage?.removeItem(STORAGE_EMAIL_KEY);
       } catch (error) {
         console.log(error);
         toast.error("Error while loggin in. Please try again.");
@@ -52,7 +52,7 @@ export default function Page() {
         };
         await sendSignInLinkToEmail(auth, email, actionCodeSettings);
         setSuccess(true);
-        localStorage.setItem(STORAGE_EMAIL_KEY, email);
+        localStorage?.setItem(STORAGE_EMAIL_KEY, email);
       } catch (error) {
         console.log(error);
         toast.error("Error while sending login link. Please try again soon.");
